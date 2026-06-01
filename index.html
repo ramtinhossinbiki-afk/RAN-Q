@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>RAM C | کیو آر کد ساز حرفه‌ای</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', 'Vazir', system-ui, sans-serif;
+        }
+
+        body {
+            background: #fffef7;
+            padding: 2rem 1.2rem;
+            color: #2d3e50;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 1.75rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02), 0 2px 6px rgba(255,200,100,0.1);
+            border: 1px solid #fff0d6;
+            overflow: hidden;
+        }
+
+        .btn {
+            background: #fffcf5;
+            border: 1px solid #ffe2b5;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #b97f2e;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #f9e0a0;
+            border: none;
+            color: #784a0e;
+            box-shadow: 0 2px 4px rgba(249,200,100,0.2);
+        }
+
+        .btn-primary:hover {
+            background: #f7d97e;
+            transform: translateY(-1px);
+        }
+
+        .form-control, .form-select {
+            background: #fffcf5;
+            border: 1px solid #ffe2bc;
+            border-radius: 1rem;
+            padding: 0.6rem 1rem;
+            width: 100%;
+            font-size: 0.85rem;
+            color: #2d3e50;
+        }
+
+        .form-control:focus, .form-select:focus {
+            outline: none;
+            border-color: #e5a12e;
+        }
+
+        .nav-pills .nav-link {
+            background: #fefaf2;
+            border: 1px solid #ffe2bc;
+            border-radius: 2rem;
+            margin: 0.2rem;
+            padding: 0.5rem 1rem;
+            color: #b97f2e;
+            font-weight: 500;
+        }
+
+        .nav-pills .nav-link.active {
+            background: #fce6b4;
+            color: #7a480c;
+            border-color: #f5cd8a;
+        }
+
+        .tab-content {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 1rem;
+        }
+
+        .result-area {
+            background: #fefcf7;
+            border-radius: 1rem;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid #fff0e0;
+        }
+
+        .result-area canvas, .result-area img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+        }
+
+        .color-preview {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #fff0d6;
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.7rem;
+            color: #bfae95;
+            border-top: 1px solid #fff0e2;
+            padding-top: 1rem;
+        }
+
+        h1 {
+            font-weight: 700;
+            color: #c8821f;
+        }
+
+        .slider {
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs2@0.0.2/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body>
+<div class="card" style="padding: 1.8rem 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 1rem;">
+        <div>
+            <h1>RAM Q.C</h1>
+            <span style="font-size:0.7rem; color:#cc9a5c;">RAMTIN QR CODE · کیو آر کد ساز حرفه‌ای</span>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+            <a href="https://github.com/ramtinhossinbiki" target="_blank" style="text-decoration: none;">
+                <button class="btn" style="background:#f5f0e8;">🐙 گیت‌هاب</button>
+            </a>
+        </div>
+    </div>
+
+    <div class="row" style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+        <!-- سمت راست: فرم ورودی -->
+        <div style="flex: 2; min-width: 250px;">
+            <ul class="nav nav-pills" style="display: flex; flex-wrap: wrap; gap: 0.2rem; margin-bottom: 1rem;" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" data-bs-type="link">لینک</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-type="text">متن</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-type="tel">تلفن</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-type="wifi">وای‌فای</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-type="vcard">کارت ویزیت</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="tabContent">
+                <!-- لینک -->
+                <div class="tab-pane active" id="link-pane">
+                    <label>آدرس وب</label>
+                    <input type="url" id="linkData" class="form-control" placeholder="https://example.com" value="">
+                </div>
+                <!-- متن -->
+                <div class="tab-pane" id="text-pane" style="display: none;">
+                    <label>متن</label>
+                    <textarea id="textData" class="form-control" rows="3" placeholder="متن دلخواه ..."></textarea>
+                </div>
+                <!-- تلفن -->
+                <div class="tab-pane" id="tel-pane" style="display: none;">
+                    <label>شماره تلفن</label>
+                    <input type="tel" id="telData" class="form-control" placeholder="+98 912 123 4567">
+                </div>
+                <!-- وای‌فای -->
+                <div class="tab-pane" id="wifi-pane" style="display: none;">
+                    <label>نام شبکه (SSID)</label>
+                    <input type="text" id="wifiSsid" class="form-control" placeholder="MyWiFi">
+                    <label class="mt-2">رمز</label>
+                    <input type="text" id="wifiPass" class="form-control" placeholder="password">
+                    <label class="mt-2">نوع امنیت</label>
+                    <select id="wifiEnc" class="form-select">
+                        <option value="WPA">WPA/WPA2</option>
+                        <option value="WEP">WEP</option>
+                        <option value="nopass">بدون رمز</option>
+                    </select>
+                </div>
+                <!-- کارت ویزیت ساده -->
+                <div class="tab-pane" id="vcard-pane" style="display: none;">
+                    <label>نام و نام خانوادگی</label>
+                    <input type="text" id="vcardName" class="form-control" placeholder="علی رضایی">
+                    <label class="mt-2">شماره موبایل</label>
+                    <input type="tel" id="vcardPhone" class="form-control" placeholder="0912 123 4567">
+                    <label class="mt-2">ایمیل</label>
+                    <input type="email" id="vcardEmail" class="form-control" placeholder="info@example.com">
+                    <label class="mt-2">شرکت / عنوان شغلی</label>
+                    <input type="text" id="vcardOrg" class="form-control" placeholder="شرکت نگار نو">
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <label>رنگ QR</label>
+                <input type="color" id="qrColor" value="#12232f" style="width: 50px; height: 40px; border-radius: 8px; border: 1px solid #ffe2bc;">
+                <label class="me-2">رنگ پس‌زمینه</label>
+                <input type="color" id="qrBgColor" value="#ffffff" style="width: 50px; height: 40px; border-radius: 8px; border: 1px solid #ffe2bc;">
+                <label class="me-2">اندازه (px)</label>
+                <select id="qrSize" class="form-select" style="width: auto; display: inline-block; width: 100px;">
+                    <option value="200">200</option>
+                    <option value="300" selected>300</option>
+                    <option value="400">400</option>
+                    <option value="500">500</option>
+                </select>
+            </div>
+
+            <div class="mt-3">
+                <label>لوگو (اختیاری)</label>
+                <input type="file" id="logoUpload" accept="image/png, image/jpeg" class="form-control">
+                <div class="mt-2">
+                    <label>اندازه لوگو (%)</label>
+                    <input type="range" id="logoSize" min="10" max="40" value="20" class="slider">
+                    <span id="logoSizeVal">20%</span>
+                </div>
+            </div>
+
+            <div class="mt-3" style="display: flex; gap: 1rem;">
+                <button id="generateBtn" class="btn btn-primary">ایجاد کیوآرکد</button>
+                <button id="downloadBtn" class="btn">دانلود PNG</button>
+            </div>
+        </div>
+
+        <!-- سمت چپ: نمایش QR -->
+        <div style="flex: 1; min-width: 250px;">
+            <div class="result-area">
+                <div id="qrcodeCanvas"></div>
+                <div id="qrPreview" style="margin-top: 0.5rem; font-size:0.8rem; color:#b97f2e;"></div>
+            </div>
+        </div>
+    </div>
+    <footer>🔒 کیوآرکدها به صورت محلی و بدون ارسال به سرور ساخته می‌شوند · قابلیت درج لوگو و رنگ دلخواه · تضمین بدون انقضا</footer>
+</div>
+
+<script>
+    // متغیرها
+    let currentQR = null;
+    let currentData = "";
+    let currentLogo = null; // فایل آپلود شده
+
+    // تابع تولید متن نهایی بر اساس نوع
+    function getQRContent() {
+        const activeTab = document.querySelector('.nav-link.active').getAttribute('data-bs-type');
+        if (activeTab === 'link') {
+            return document.getElementById('linkData').value.trim();
+        } else if (activeTab === 'text') {
+            return document.getElementById('textData').value.trim();
+        } else if (activeTab === 'tel') {
+            let tel = document.getElementById('telData').value.trim();
+            if (tel) return "tel:" + tel;
+            return "";
+        } else if (activeTab === 'wifi') {
+            let ssid = document.getElementById('wifiSsid').value.trim();
+            let pass = document.getElementById('wifiPass').value;
+            let enc = document.getElementById('wifiEnc').value;
+            if (!ssid) return "";
+            if (enc === "nopass") return `WIFI:S:${ssid};T:nopass;;`;
+            return `WIFI:S:${ssid};T:${enc};P:${pass};;`;
+        } else if (activeTab === 'vcard') {
+            let name = document.getElementById('vcardName').value.trim();
+            let phone = document.getElementById('vcardPhone').value.trim();
+            let email = document.getElementById('vcardEmail').value.trim();
+            let org = document.getElementById('vcardOrg').value.trim();
+            let vcard = "BEGIN:VCARD\nVERSION:3.0\n";
+            if (name) vcard += `FN:${name}\nN:${name};;;\n`;
+            if (phone) vcard += `TEL:${phone}\n`;
+            if (email) vcard += `EMAIL:${email}\n`;
+            if (org) vcard += `ORG:${org}\n`;
+            vcard += "END:VCARD";
+            return vcard;
+        }
+        return "";
+    }
+
+    // تولید QR ساده با استفاده از کتابخانه QRCode.js (بدون لوگو)
+    function generatePlainQR(text, size, fgColor, bgColor) {
+        return new Promise((resolve, reject) => {
+            const container = document.getElementById('qrcodeCanvas');
+            container.innerHTML = ""; // پاک کردن قبلی
+            try {
+                const qr = new QRCode(container, {
+                    text: text,
+                    width: parseInt(size),
+                    height: parseInt(size),
+                    colorDark: fgColor,
+                    colorLight: bgColor,
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                // صبر برای رندر شدن
+                setTimeout(() => {
+                    const canvas = container.querySelector('canvas');
+                    if (canvas) resolve(canvas);
+                    else reject("canvas not found");
+                }, 100);
+            } catch(e) { reject(e); }
+        });
+    }
+
+    // اضافه کردن لوگو روی canvas
+    function addLogoToCanvas(canvas, logoFile, logoPercent) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => {
+                const ctx = canvas.getContext('2d');
+                const size = canvas.width;
+                const logoW = size * (logoPercent / 100);
+                const logoH = logoW; // مربع
+                const x = (size - logoW) / 2;
+                const y = (size - logoH) / 2;
+                ctx.drawImage(img, x, y, logoW, logoH);
+                resolve(canvas);
+            };
+            img.onerror = reject;
+            img.src = URL.createObjectURL(logoFile);
+        });
+    }
+
+    // تابع اصلی ساخت QR (با لوگو در صورت وجود)
+    async function buildQR() {
+        const text = getQRContent();
+        if (!text) {
+            document.getElementById('qrPreview').innerHTML = "⚠️ لطفاً اطلاعات را وارد کنید";
+            return;
+        }
+        const size = document.getElementById('qrSize').value;
+        const fgColor = document.getElementById('qrColor').value;
+        const bgColor = document.getElementById('qrBgColor').value;
+        const logoFile = currentLogo;
+        const logoPercent = parseInt(document.getElementById('logoSize').value);
+
+        try {
+            let canvas = await generatePlainQR(text, size, fgColor, bgColor);
+            if (logoFile) {
+                canvas = await addLogoToCanvas(canvas, logoFile, logoPercent);
+            }
+            // نمایش در یک img برای ذخیره بعدی
+            const imgData = canvas.toDataURL('image/png');
+            const preview = document.getElementById('qrPreview');
+            preview.innerHTML = `<img src="${imgData}" style="max-width:100%; border-radius:0.5rem;">`;
+            // ذخیره canvas برای دانلود
+            window.finalCanvas = canvas;
+        } catch(err) {
+            console.error(err);
+            document.getElementById('qrPreview').innerHTML = "❌ خطا در تولید کیوآرکد";
+        }
+    }
+
+    // دانلود فایل PNG
+    function downloadQR() {
+        if (!window.finalCanvas) {
+            alert('ابتدا کیوآرکد را ایجاد کنید');
+            return;
+        }
+        const link = document.createElement('a');
+        link.download = 'qrcode.png';
+        link.href = window.finalCanvas.toDataURL();
+        link.click();
+    }
+
+    // مدیریت تب‌ها
+    function initTabs() {
+        const tabs = document.querySelectorAll('.nav-link');
+        const panes = {
+            link: document.getElementById('link-pane'),
+            text: document.getElementById('text-pane'),
+            tel: document.getElementById('tel-pane'),
+            wifi: document.getElementById('wifi-pane'),
+            vcard: document.getElementById('vcard-pane')
+        };
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const type = tab.getAttribute('data-bs-type');
+                Object.values(panes).forEach(pane => pane.style.display = 'none');
+                panes[type].style.display = 'block';
+                // به‌روزرسانی خودکار QR
+                buildQR();
+            });
+        });
+    }
+
+    // بارگذاری لوگو
+    document.getElementById('logoUpload').addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+            currentLogo = e.target.files[0];
+            buildQR();
+        } else {
+            currentLogo = null;
+            buildQR();
+        }
+    });
+
+    document.getElementById('logoSize').addEventListener('input', (e) => {
+        document.getElementById('logoSizeVal').innerText = e.target.value + '%';
+        buildQR();
+    });
+
+    document.getElementById('generateBtn').addEventListener('click', buildQR);
+    document.getElementById('downloadBtn').addEventListener('click', downloadQR);
+    document.getElementById('qrColor').addEventListener('input', buildQR);
+    document.getElementById('qrBgColor').addEventListener('input', buildQR);
+    document.getElementById('qrSize').addEventListener('change', buildQR);
+    document.querySelectorAll('#tabContent input, #tabContent textarea, #tabContent select').forEach(el => {
+        el.addEventListener('input', buildQR);
+        el.addEventListener('change', buildQR);
+    });
+
+    // مقدار اولیه
+    initTabs();
+    buildQR();
+</script>
+</body>
+</html>
